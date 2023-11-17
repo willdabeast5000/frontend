@@ -31,6 +31,10 @@ const Toolbar = (props: Props) => {
         };
     }, [navOpen, handleNavClose]);
 
+    const isCurrentItem = React.useCallback((path: string) => {
+        return window.location.pathname.includes(path) && "selected";
+    }, [])
+
     return (
         <div className={props.className}>
             <div id="hamburger-menu" className="hamburger-menu" onClick={hamburgerClick}>
@@ -40,11 +44,11 @@ const Toolbar = (props: Props) => {
             </div>
             <div id="nav-menu" className={`nav-menu ${navOpen ? "open-menu" : ""}`}>
                 <div className="nav-container">
-                    <Link className="nav-item" to="/">
-                        <Home height={32} width={32} />
+                    <Link className={`nav-item ${isCurrentItem("/home")}`} to="/home">
+                        <Home />
                         <div className="nav-name">Home</div>
                     </Link>
-                    <Link className="nav-item" to="/admin">
+                    <Link className={`nav-item ${isCurrentItem("/admin")}`} to="/admin">
                         <AdminPanelSettings />
                         <div className="nav-name">Administration</div>
                     </Link>
@@ -61,6 +65,11 @@ export default styled(Toolbar)`
     display: flex;
     flex-direction: row;
     background-color: #007c15;
+
+    .selected {
+        color: #007c15 !important;
+        border-color: #007c15 !important;
+    }
 
     .nav-menu {
         height: calc(100% - 48px);
@@ -88,6 +97,20 @@ export default styled(Toolbar)`
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        width: calc(100% - 16px);
+        padding: 7px;
+        color: #000;
+        text-decoration: none;
+        transition: 500ms;
+        cursor: pointer;
+        transition-property: background-color border-color;
+        border: 1px solid #CCC;
+    }
+
+    .nav-item:hover {
+        background-color: #DDD;
+        padding: 7px;
+        border: 1px solid #FFFFFF;
     }
 
     .nav-name {
